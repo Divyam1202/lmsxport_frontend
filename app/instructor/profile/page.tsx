@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getUser, hasRole } from "@/app/utils/auth";
+import { getUser, hasRole, logout } from "@/app/utils/auth";
 import { useTheme } from "@/app/providers/theme-providers";
 import { User } from "@/app/types/user";
 import { API_BASE_URL } from "@/app/config/api";
@@ -136,6 +136,44 @@ export default function staffProfile() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+      {/* Navigation Bar */}
+      <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-16 items-center">
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-blue-300 text-transparent bg-clip-text">
+                Learn X Port
+              </h1>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                |
+              </span>
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                Instructor Portal
+              </span>
+            </div>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
+              >
+                {theme === "dark" ? "🌞" : "🌙"}
+              </button>
+              <button
+                onClick={logout}
+                className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 rounded-xl transition-all duration-200"
+              >
+                Logout
+              </button>
+              <button
+                onClick={() => router.push('/instructor/dashboard')}
+                className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 rounded-xl transition-all duration-200"
+              >
+                Back to Dashboard
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>  
       {/* Navigation */}
       <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -143,7 +181,7 @@ export default function staffProfile() {
             <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
               My Profile
             </h1>
-            <button
+            {/* <button
               onClick={() => router.back()}
               className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
             >
@@ -161,7 +199,7 @@ export default function staffProfile() {
                 />
               </svg>
               Back
-            </button>
+            </button> */}
           </div>
         </div>
       </nav>

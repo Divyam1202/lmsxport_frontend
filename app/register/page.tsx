@@ -11,7 +11,7 @@ interface FormData {
   email: string;
   password: string;
   confirmPassword: string;
-  role: 'student' | 'instructor' | undefined;
+  role: 'student' | 'instructor' | 'portfolio' | undefined;
   educationLevel: string;
   interests: string[];
 }
@@ -45,10 +45,22 @@ export default function RegisterPage() {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
+    const { name, value } = e.target;
+
+    // Validation for firstName, lastName, and educationLevel
+    if (['firstName', 'lastName', 'educationLevel'].includes(name)) {
+      const regex = /^[a-zA-Z\s]*$/;
+      if (!regex.test(value)) {
+        setError(`Invalid characters in ${name}`);
+        return;
+      }
+    }
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
+    setError(""); // Clear error when input is valid
   };
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -96,6 +108,8 @@ export default function RegisterPage() {
           ? "/student/dashboard"
           : data.user.role === "instructor"
           ? "/instructor/dashboard"
+          :data.user.role === "portfolio"
+          ? "/portfolio/dashboard"
           : "/admin/dashboard";
 
       router.push(redirectPath);
@@ -268,6 +282,7 @@ export default function RegisterPage() {
                   <option value="">Select Role</option>
                   <option value="student">Student</option>
                   <option value="instructor">Instructor</option>
+                  <option value="portfolio">portfolioUser</option>
                 </select>
               </div>
 
@@ -297,7 +312,7 @@ export default function RegisterPage() {
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Areas of Interest
                 </label>
-                <div className="space-x-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   {interestOptions.map((interest) => (
                     <label key={interest} className="inline-flex items-center">
                       <input

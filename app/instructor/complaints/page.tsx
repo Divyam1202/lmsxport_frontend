@@ -57,7 +57,7 @@ export default function ComplaintsPage() {
       }
   
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/instructor/complaint`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/instructor/complaints`,
         {
           method: "GET",
           headers: {
@@ -142,7 +142,7 @@ export default function ComplaintsPage() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/student/complaint-update/${complaintId}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/instructor/update-complaint/${complaintId}`,
         {
           method: "PATCH",
           headers: {
@@ -303,6 +303,12 @@ export default function ComplaintsPage() {
                 className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 rounded-xl transition-all duration-200"
               >
                 Logout
+              </button>
+              <button
+                onClick={() => router.push('/instructor/dashboard')}
+                className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 rounded-xl transition-all duration-200"
+              >
+                Back to Dashboard
               </button>
             </div>
           </div>

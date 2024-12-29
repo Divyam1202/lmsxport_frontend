@@ -6,7 +6,6 @@ import { getUser, logout, hasRole } from "@/app/utils/auth";
 import { useTheme } from "@/app/providers/theme-providers";
 import { User } from "@/app/types/user";
 import { API_BASE_URL } from "@/app/config/api";
-import MenuModal from "@/app/components/MenuModal";
 
 // interface LeaveStats {
 //   pending: number;
@@ -59,11 +58,14 @@ export default function InstructorDashboard() {
 
   const fetchMenuImage = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/instructor/createcourse`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/api/instructor/createcourse`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to fetch menu");
@@ -135,8 +137,7 @@ export default function InstructorDashboard() {
               Welcome back, {user.firstName} 👋
             </h2>
             <p className="text-blue-100">
-              Manage student courses and help solve querries from your
-              dashboard
+              Manage student courses and help solve querries from your dashboard
             </p>
           </div>
         </div>
@@ -272,7 +273,7 @@ export default function InstructorDashboard() {
             </p>
           </button> */}
 
-<button
+          <button
             onClick={() => router.push("/instructor/createcourse")}
             className="group p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200 dark:border-gray-700 flex flex-col items-center text-center hover:scale-105"
           >
@@ -352,7 +353,7 @@ export default function InstructorDashboard() {
               View and edit your profile
             </p>
           </button>
-          
+
           <button
             onClick={() => router.push("/instructor/attendance")}
             className="group p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 border border-gray-200 dark:border-gray-700 flex flex-col items-center text-center hover:scale-105"
@@ -406,14 +407,8 @@ export default function InstructorDashboard() {
               View and handle student complaints
             </p>
           </button>
-          
         </div>
       </main>
-      <MenuModal
-        isOpen={isMenuModalOpen}
-        onClose={() => setIsMenuModalOpen(false)}
-        menuUrl={menuImage}
-      />
     </div>
   );
 }

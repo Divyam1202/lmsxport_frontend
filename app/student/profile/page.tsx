@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getUser, hasRole } from "@/app/utils/auth";
+import { getUser, hasRole, logout } from "@/app/utils/auth";
 import { useTheme } from "@/app/providers/theme-providers";
 import { User } from "@/app/types/user";
 import { API_BASE_URL } from "@/app/config/api";
@@ -18,7 +18,6 @@ export default function StudentProfile() {
     firstName: "",
     lastName: "",
     email: "",
-    roomNumber: "",
     currentPassword: "",
     newPassword: "",
     confirmPassword: "",
@@ -34,7 +33,6 @@ export default function StudentProfile() {
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
-    //   roomNumber: user.roomNumber || "",
     }));
   }, [user, router]);
 
@@ -65,7 +63,6 @@ export default function StudentProfile() {
           firstName: formData.firstName,
           lastName: formData.lastName,
           email: formData.email,
-          roomNumber: formData.roomNumber,
         }),
       });
 
@@ -134,41 +131,62 @@ export default function StudentProfile() {
     }
   };
 
+  const handleBackToDashboard = () => {
+    router.push("/student/dashboard");
+  };
+
   if (!user) return null;
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
-      {/* Navigation */}
+      {/* Navigation Bar */}
       <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md sticky top-0 z-50 border-b border-gray-200 dark:border-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
-            <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-              My Profile
-            </h1>
-            <button
-              onClick={() => router.back()}
-              className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-200 bg-gray-100 dark:bg-gray-800 rounded-xl hover:bg--200 dark:hover:bg-gray-700 transition-colors duration-200"
-            >
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            <div className="flex items-center gap-2">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-blue-300 text-transparent bg-clip-text">
+                Learn X Port
+              </h1>
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                |
+              </span>
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-300">
+                Student Portal
+              </span>
+            </div>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                />
-              </svg>
-              Back
-            </button>
+                {theme === "dark" ? "🌞" : "🌙"}
+              </button>
+              <button
+                onClick={logout}
+                className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 rounded-xl transition-all duration-200"
+              >
+                Logout
+              </button>
+              <button
+                onClick={handleBackToDashboard}
+                className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 rounded-xl transition-all duration-200"
+              >
+                Back to Dashboard
+              </button>
+            </div>
           </div>
         </div>
       </nav>
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mb-8">
+          <div className="bg-gradient-to-br from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 rounded-2xl p-8 text-white">
+            <h2 className="text-3xl font-bold mb-2">My Profile 🧑‍🎓</h2>
+            <p className="text-blue-100">
+              Edit your information and keep it updated.
+            </p>
+          </div>
+        </div>
         {/* Success Message */}
         {success && (
           <div className="mb-6 bg-green-50 dark:bg-green-900/30 text-green-500 dark:text-green-400 p-4 rounded-xl text-sm flex items-center gap-2">
@@ -228,19 +246,6 @@ export default function StudentProfile() {
                       value={formData.lastName}
                       onChange={handleChange}
                       className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                      Room Number
-                    </label>
-                    <input
-                      type="text"
-                      name="roomNumber"
-                      value={formData.roomNumber}
-                      onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
-                      placeholder="Enter your room number"
                     />
                   </div>
                 </div>

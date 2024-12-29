@@ -138,7 +138,7 @@ export default function ComplaintsPage() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/student/complaint`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/student/complaints`,
         {
           method: "POST",
           headers: {
@@ -269,6 +269,7 @@ export default function ComplaintsPage() {
               <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-blue-300 text-transparent bg-clip-text">
                 Learn X Port
               </h1>
+              
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 |
               </span>
@@ -289,6 +290,12 @@ export default function ComplaintsPage() {
               >
                 Logout
               </button>
+              <button
+              onClick={() => router.push('/student/dashboard')}
+              className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 rounded-xl transition-all duration-200"
+            >
+              Back to Dashboard
+            </button>
             </div>
           </div>
         </div>
@@ -442,34 +449,6 @@ export default function ComplaintsPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      {/* <div className="flex gap-2">
-                        {complaint.status === "Pending" && (
-                          <>
-                            <button
-                              onClick={() =>
-                                handleMarkAsResolved(complaint._id)
-                              }
-                              className="inline-flex items-center px-3 py-1.5 bg-green-100 hover:bg-green-200 dark:bg-green-900/30 dark:hover:bg-green-800/50 text-green-700 dark:text-green-400 rounded-lg transition-colors duration-200"
-                            >
-                              <span className="text-sm font-medium">
-                                Mark Resolved
-                              </span>
-                            </button>
-                            <button
-                              onClick={() => setEditingComplaint(complaint)}
-                              className="inline-flex items-center px-3 py-1.5 bg-blue-100 hover:bg-blue-200 dark:bg-blue-900/30 dark:hover:bg-blue-800/50 text-blue-700 dark:text-blue-400 rounded-lg transition-colors duration-200"
-                            >
-                              <span className="text-sm font-medium">Edit</span>
-                            </button>
-                          </>
-                        )}
-                        <button
-                          onClick={() => handleDelete(complaint._id)}
-                          className="inline-flex items-center px-3 py-1.5 bg-red-100 hover:bg-red-200 dark:bg-red-900/30 dark:hover:bg-red-800/50 text-red-700 dark:text-red-400 rounded-lg transition-colors duration-200"
-                        >
-                          <span className="text-sm font-medium">Delete</span>
-                        </button>
-                      </div> */}
                     </td>
                   </tr>
                 ))}

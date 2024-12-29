@@ -43,6 +43,8 @@ export default function LoginPage() {
           ? "/student/dashboard"
           : data.user.role === "instructor"
           ? "/instructor/dashboard"
+          : data.user.role === "portfolio"
+          ? "/portfolio/dashboard"
           : "/admin/dashboard";
 
       router.push(redirectPath);
