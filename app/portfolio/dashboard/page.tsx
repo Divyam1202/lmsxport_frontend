@@ -74,13 +74,25 @@ export default function DashboardPage() {
     value: string
   ) => {
     setPortfolio((prev) => {
-      const updatedSection = Array.isArray(prev[section])
-        ? [...prev[section]]
-        : [];
-      if (typeof updatedSection[index] === "object") {
-        updatedSection[index] = { ...updatedSection[index], [field]: value };
+      const currentSection = prev[section];
+
+      if (Array.isArray(currentSection)) {
+        const updatedSection = [...currentSection]; // Spread only if it's an array
+
+        if (
+          updatedSection[index] !== null &&
+          typeof updatedSection[index] === "object" &&
+          !Array.isArray(updatedSection[index]) // Ensure it's an object and not an array
+        ) {
+          updatedSection[index] = { ...updatedSection[index], [field]: value };
+        }
+
+        return { ...prev, [section]: updatedSection };
       }
-      return { ...prev, [section]: updatedSection };
+
+      // Handle non-array cases (optional: add a fallback or throw an error)
+      console.error(`Section "${section}" is not an array`);
+      return prev;
     });
   };
 
