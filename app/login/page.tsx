@@ -12,14 +12,15 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { theme, toggleTheme } = useTheme();
-
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/login", {
+      const response = await fetch("${API_BASE_URL}/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

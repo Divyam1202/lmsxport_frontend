@@ -12,20 +12,20 @@ interface FormData {
   email: string;
   password: string;
   confirmPassword: string;
-  role: 'portfolio' | undefined;
-//   educationLevel: string;
-//   interests: string[];
+  role: "portfolio" | undefined;
+  //   educationLevel: string;
+  //   interests: string[];
 }
 
 export default function RegisterPage() {
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
-    username: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    username: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
     role: undefined,
     // educationLevel: '',
     // interests: [],
@@ -34,23 +34,25 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const { theme, toggleTheme } = useTheme();
 
-//   const interestOptions = [
-//     'Web Development',
-//     'Data Science',
-//     'Mobile Development',
-//     'AI/ML',
-//     'Business',
-//     'Design',
-//     'Marketing',
-//   ];
+  //   const interestOptions = [
+  //     'Web Development',
+  //     'Data Science',
+  //     'Mobile Development',
+  //     'AI/ML',
+  //     'Business',
+  //     'Design',
+  //     'Marketing',
+  //   ];
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
 
     // Validation for firstName, lastName, and username
-    if (['firstName', 'lastName', ''].includes(name)) {
+    if (["firstName", "lastName", ""].includes(name)) {
       const regex = /^[a-zA-Z\s]*$/;
       if (!regex.test(value)) {
         setError(`Invalid characters in ${name}`);
@@ -65,57 +67,59 @@ export default function RegisterPage() {
     setError(""); // Clear error when input is valid
   };
 
-//   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     const { value, checked } = e.target;
-//     if (checked) {
-//       setFormData((prevState) => ({
-//         ...prevState,
-//         interests: [...prevState.interests, value],
-//       }));
-//     } else {
-//       setFormData((prevState) => ({
-//         ...prevState,
-//         interests: prevState.interests.filter((interest) => interest !== value),
-//       }));
-//     }
-//   };
+  //   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //     const { value, checked } = e.target;
+  //     if (checked) {
+  //       setFormData((prevState) => ({
+  //         ...prevState,
+  //         interests: [...prevState.interests, value],
+  //       }));
+  //     } else {
+  //       setFormData((prevState) => ({
+  //         ...prevState,
+  //         interests: prevState.interests.filter((interest) => interest !== value),
+  //       }));
+  //     }
+  //   };
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
-const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(""); // Clear any previous errors
     setLoading(true);
-  
+
     if (!formData.role) {
       setError("Role is required.");
       setLoading(false);
       return;
     }
-  
+
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
+      const response = await fetch("${API_BASE_URL}/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-  
+
       const data = await response.json();
-  
+
       if (!response.ok) {
         throw new Error(data.message || "Registration failed");
       }
-  
+
       // Store the token in localStorage
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
-  
+
       // Redirect to dashboard
       const redirectPath =
         data.user.role === "portfolioUser"
           ? "/portfolio/dashboard"
           : "/admin/dashboard";
-  
+
       router.push(redirectPath);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong");
@@ -123,7 +127,6 @@ const handleSubmit = async (e: React.FormEvent) => {
       setLoading(false);
     }
   };
-  
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black transition-colors duration-200 p-4">
@@ -167,69 +170,69 @@ const handleSubmit = async (e: React.FormEvent) => {
 
           {/* Registration Form */}
           <form className="space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-4">
-  {/* Username */}
-  <div>
-    <label
-      htmlFor="username"
-      className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-    >
-      User Name
-    </label>
-    <input
-      id="username"
-      name="username"
-      type="text"
-      required
-      className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
-      placeholder="Username"
-      value={formData.username}
-      onChange={handleChange}
-      disabled={loading}
-    />
-  </div>
+            <div className="space-y-4">
+              {/* Username */}
+              <div>
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                >
+                  User Name
+                </label>
+                <input
+                  id="username"
+                  name="username"
+                  type="text"
+                  required
+                  className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                  placeholder="Username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  disabled={loading}
+                />
+              </div>
 
-  {/* First Name and Last Name */}
-  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-    <div>
-      <label
-        htmlFor="firstName"
-        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-      >
-        First Name
-      </label>
-      <input
-        id="firstName"
-        name="firstName"
-        type="text"
-        required
-        className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
-        placeholder="John"
-        value={formData.firstName}
-        onChange={handleChange}
-        disabled={loading}
-      />
-    </div>
-    <div>
-      <label
-        htmlFor="lastName"
-        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-      >
-        Last Name
-      </label>
-      <input
-        id="lastName"
-        name="lastName"
-        type="text"
-        required
-        className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
-        placeholder="Doe"
-        value={formData.lastName}
-        onChange={handleChange}
-        disabled={loading}
-      />
-    </div>
-  </div>
+              {/* First Name and Last Name */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label
+                    htmlFor="firstName"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    First Name
+                  </label>
+                  <input
+                    id="firstName"
+                    name="firstName"
+                    type="text"
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                    placeholder="John"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    disabled={loading}
+                  />
+                </div>
+                <div>
+                  <label
+                    htmlFor="lastName"
+                    className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  >
+                    Last Name
+                  </label>
+                  <input
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    required
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-200"
+                    placeholder="Doe"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    disabled={loading}
+                  />
+                </div>
+              </div>
               <div>
                 <label
                   htmlFor="email"

@@ -7,11 +7,13 @@ const DEMO_COURSES = [
   {
     id: "1",
     title: "Web Development Fundamentals",
-    description: "Learn the basics of web development with HTML, CSS, and JavaScript. Perfect for beginners starting their coding journey.",
+    description:
+      "Learn the basics of web development with HTML, CSS, and JavaScript. Perfect for beginners starting their coding journey.",
     instructor: "Sarah Johnson",
     duration: "12 weeks",
     enrolled: 1234,
-    image: "https://images.unsplash.com/photo-1593720219276-0b1eacd0aef4?w=800&auto=format&fit=crop&q=60",
+    image:
+      "https://images.unsplash.com/photo-1593720219276-0b1eacd0aef4?w=800&auto=format&fit=crop&q=60",
     price: 49.99,
     curriculum: [
       "Introduction to HTML",
@@ -25,7 +27,11 @@ const DEMO_COURSES = [
   // ... other courses
 ];
 
-export default function CoursePage({ params }: { params: { courseId: string } }) {
+export default function CoursePage({
+  params,
+}: {
+  params: { courseId: string };
+}) {
   const course = DEMO_COURSES.find((c) => c.id === params.courseId);
 
   if (!course) {

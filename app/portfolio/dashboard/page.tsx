@@ -178,10 +178,12 @@ export default function DashboardPage() {
       published: !prev.published,
     }));
   };
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
   const handleSaveProfile = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/portfolio", {
+      const response = await fetch("${API_BASE_URL}/api/portfolio", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

@@ -11,7 +11,7 @@ interface FormData {
   email: string;
   password: string;
   confirmPassword: string;
-  role: 'student' | 'instructor' | 'portfolio' | undefined;
+  role: "student" | "instructor" | "portfolio" | undefined;
   educationLevel: string;
   interests: string[];
 }
@@ -19,13 +19,13 @@ interface FormData {
 export default function RegisterPage() {
   const router = useRouter();
   const [formData, setFormData] = useState<FormData>({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
     role: undefined,
-    educationLevel: '',
+    educationLevel: "",
     interests: [],
   });
   const [error, setError] = useState<string>(""); // Changed to string
@@ -33,22 +33,24 @@ export default function RegisterPage() {
   const { theme, toggleTheme } = useTheme();
 
   const interestOptions = [
-    'Web Development',
-    'Data Science',
-    'Mobile Development',
-    'AI/ML',
-    'Business',
-    'Design',
-    'Marketing',
+    "Web Development",
+    "Data Science",
+    "Mobile Development",
+    "AI/ML",
+    "Business",
+    "Design",
+    "Marketing",
   ];
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
 
     // Validation for firstName, lastName, and educationLevel
-    if (['firstName', 'lastName', 'educationLevel'].includes(name)) {
+    if (["firstName", "lastName", "educationLevel"].includes(name)) {
       const regex = /^[a-zA-Z\s]*$/;
       if (!regex.test(value)) {
         setError(`Invalid characters in ${name}`);
@@ -77,6 +79,8 @@ export default function RegisterPage() {
       }));
     }
   };
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,7 +88,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:5000/api/auth/register", {
+      const response = await fetch("${API_BASE_URL}/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -108,7 +112,7 @@ export default function RegisterPage() {
           ? "/student/dashboard"
           : data.user.role === "instructor"
           ? "/instructor/dashboard"
-          :data.user.role === "portfolio"
+          : data.user.role === "portfolio"
           ? "/portfolio/dashboard"
           : "/admin/dashboard";
 

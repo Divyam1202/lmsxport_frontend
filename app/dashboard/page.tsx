@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
@@ -8,10 +8,11 @@ export default function PortfolioDashboard() {
   const [portfolio, setPortfolio] = useState<any>(null);
   const [projects, setProjects] = useState<any[]>([]); // Assuming portfolio has projects as well.
   const [skills, setSkills] = useState<string[]>([]);
-  const [bio, setBio] = useState<string>('');
-  const [portfolioUrl, setPortfolioUrl] = useState<string>('');
+  const [bio, setBio] = useState<string>("");
+  const [portfolioUrl, setPortfolioUrl] = useState<string>("");
   const router = useRouter();
-
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (!token) {
@@ -20,10 +21,11 @@ export default function PortfolioDashboard() {
     }
 
     const fetchPortfolioData = async () => {
-      const response = await fetch("http://localhost:5000/api/portfolio/user/me", { // Use 'me' to get logged in user's portfolio
+      const response = await fetch(`${API_BASE_URL}/api/portfolio/user/me`, {
+        // Use 'me' to get logged in user's portfolio
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -36,8 +38,8 @@ export default function PortfolioDashboard() {
       setUser(data.user);
       setPortfolio(data);
       setSkills(data.skills || []);
-      setBio(data.bio || '');
-      setPortfolioUrl(data.portfolioUrl || '');
+      setBio(data.bio || "");
+      setPortfolioUrl(data.portfolioUrl || "");
       setProjects(data.projects || []); // Assuming this part exists in your backend
     };
 
@@ -51,28 +53,31 @@ export default function PortfolioDashboard() {
       return;
     }
 
-    const response = await fetch(`http://localhost:5000/api/portfolio/${portfolio._id}`, {
-      method: "PUT",
-      headers: {
-        "Authorization": `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: portfolio.user,
-        portfolioUrl,
-        bio,
-        skills,
-      }),
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/api/portfolio/${portfolio._id}`,
+      {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: portfolio.user,
+          portfolioUrl,
+          bio,
+          skills,
+        }),
+      }
+    );
 
     if (!response.ok) {
-      console.error('Error updating portfolio');
+      console.error("Error updating portfolio");
       return;
     }
 
     const data = await response.json();
     setPortfolio(data.portfolio);
-    alert('Portfolio updated successfully!');
+    alert("Portfolio updated successfully!");
   };
 
   const handleAddSkill = () => {
@@ -89,8 +94,12 @@ export default function PortfolioDashboard() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <h2 className="text-3xl font-extrabold text-gray-900">Portfolio Dashboard</h2>
-      <p>Welcome, {user.firstName} {user.lastName}!</p>
+      <h2 className="text-3xl font-extrabold text-gray-900">
+        Portfolio Dashboard
+      </h2>
+      <p>
+        Welcome, {user.firstName} {user.lastName}!
+      </p>
 
       {/* Portfolio Section */}
       <div className="mt-8">
@@ -127,7 +136,9 @@ export default function PortfolioDashboard() {
             />
           </div>
         ))}
-        <button onClick={handleAddSkill} className="text-blue-500 mt-2">Add another skill</button>
+        <button onClick={handleAddSkill} className="text-blue-500 mt-2">
+          Add another skill
+        </button>
       </div>
 
       {/* Projects Section */}
@@ -138,7 +149,13 @@ export default function PortfolioDashboard() {
             <div key={index} className="bg-white shadow-lg rounded-lg p-4">
               <h4 className="text-xl font-semibold">{project.name}</h4>
               <p className="mt-2 text-gray-600">{project.description}</p>
-              <a href={project.link} target="_blank" className="text-blue-500 mt-4 inline-block">View Project</a>
+              <a
+                href={project.link}
+                target="_blank"
+                className="text-blue-500 mt-4 inline-block"
+              >
+                View Project
+              </a>
             </div>
           ))}
         </div>

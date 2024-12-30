@@ -24,11 +24,13 @@ export default function Dashboard() {
   const router = useRouter();
   //const { theme, toggleTheme } = useTheme();
   const [loading, setLoading] = useState<boolean>(true);
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
   useEffect(() => {
     const fetchPortfolios = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/portfolio", {
+        const response = await fetch("${API_BASE_URL}/api/portfolio", {
           method: "GET",
         });
 
@@ -90,7 +92,8 @@ export default function Dashboard() {
           <div className="rounded-lg border bg-card p-8">
             <h3 className="text-xl font-semibold mb-4">Professional Design</h3>
             <p className="text-muted-foreground">
-              Choose from beautiful templates designed to make your work stand out.
+              Choose from beautiful templates designed to make your work stand
+              out.
             </p>
           </div>
           <div className="rounded-lg border bg-card p-8">
