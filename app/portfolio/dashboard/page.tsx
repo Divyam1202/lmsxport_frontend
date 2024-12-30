@@ -67,6 +67,46 @@ export default function DashboardPage() {
     localStorage.setItem("savedProfile", JSON.stringify(portfolio));
   }, [portfolio]);
 
+  const handleAddItem = (section: keyof Portfolio) => {
+    const newItem =
+      section === "projects"
+        ? { name: "", description: "", technologies: [], link: "" }
+        : section === "experience"
+        ? {
+            title: "",
+            company: "",
+            location: "",
+            startDate: "",
+            endDate: "",
+            description: "",
+          }
+        : { institution: "", degree: "", graduationYear: "", major: "" };
+
+    setPortfolio((prev) => {
+      // Ensure the section is an array
+      const currentSection = prev[section];
+      return {
+        ...prev,
+        [section]: Array.isArray(currentSection)
+          ? [...currentSection, newItem] // If it's an array, add the new item
+          : [newItem], // If it's not an array, create a new array with the new item
+      };
+    });
+  };
+
+  const handleDeleteItem = (section: keyof Portfolio, index: number) => {
+    setPortfolio((prev) => {
+      // Ensure the section is an array before deleting
+      const currentSection = prev[section];
+      return {
+        ...prev,
+        [section]: Array.isArray(currentSection)
+          ? currentSection.filter((_, i) => i !== index) // If it's an array, filter out the item
+          : [], // If it's not an array, set it to an empty array
+      };
+    });
+  };
+
   const handleChange = (
     section: keyof Portfolio,
     index: number,
@@ -79,18 +119,30 @@ export default function DashboardPage() {
       if (Array.isArray(currentSection)) {
         const updatedSection = [...currentSection]; // Spread only if it's an array
 
-        if (
-          updatedSection[index] !== null &&
-          typeof updatedSection[index] === "object" &&
-          !Array.isArray(updatedSection[index]) // Ensure it's an object and not an array
-        ) {
-          updatedSection[index] = { ...updatedSection[index], [field]: value };
+        // Type assertion to ensure TypeScript knows the item is the right type
+        if (section === "experience" && updatedSection[index]) {
+          // Ensure that it's of type Experience
+          updatedSection[index] = {
+            ...(updatedSection[index] as Experience), // Type assertion
+            [field]: value,
+          };
+        } else if (section === "projects" && updatedSection[index]) {
+          // Ensure that it's of type Project
+          updatedSection[index] = {
+            ...(updatedSection[index] as Project), // Type assertion
+            [field]: value,
+          };
+        } else if (section === "education" && updatedSection[index]) {
+          // Ensure that it's of type Education
+          updatedSection[index] = {
+            ...(updatedSection[index] as Education), // Type assertion
+            [field]: value,
+          };
         }
 
         return { ...prev, [section]: updatedSection };
       }
 
-      // Handle non-array cases (optional: add a fallback or throw an error)
       console.error(`Section "${section}" is not an array`);
       return prev;
     });
@@ -110,38 +162,6 @@ export default function DashboardPage() {
     setPortfolio((prev) => {
       const updatedSkills = prev.skills.filter((_, i) => i !== index);
       return { ...prev, skills: updatedSkills };
-    });
-  };
-
-  const handleAddItem = (section: keyof Portfolio) => {
-    const newItem =
-      section === "projects"
-        ? { name: "", description: "", technologies: [], link: "" }
-        : section === "experience"
-        ? {
-            title: "",
-            company: "",
-            location: "",
-            startDate: "",
-            endDate: "",
-            description: "",
-          }
-        : { institution: "", degree: "", graduationYear: "", major: "" };
-
-    setPortfolio((prev) => ({
-      ...prev,
-      [section]: Array.isArray(prev[section])
-        ? [...prev[section], newItem]
-        : [newItem],
-    }));
-  };
-
-  const handleDeleteItem = (section: keyof Portfolio, index: number) => {
-    setPortfolio((prev) => {
-      const updatedSection = Array.isArray(prev[section])
-        ? prev[section].filter((_, i) => i !== index)
-        : [];
-      return { ...prev, [section]: updatedSection };
     });
   };
 
@@ -201,7 +221,7 @@ export default function DashboardPage() {
 
   const renderSection = (
     section: keyof Portfolio,
-    items: any[],
+    items: Experience[] | Project[] | Education[], // Explicitly type the `items` array
     handleChange: (
       section: keyof Portfolio,
       index: number,
@@ -217,6 +237,7 @@ export default function DashboardPage() {
         {items.length > 0 ? (
           items.map((item, index) => (
             <div key={index} className="mb-4">
+              {/* Render each field based on its type */}
               {Object.keys(item).map((key) => (
                 <input
                   key={key}

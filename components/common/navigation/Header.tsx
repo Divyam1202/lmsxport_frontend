@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ModeToggle } from "@/components/mode-toggle";
+import { ModeToggle } from "@/components/ui/mode-toggle";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { GraduationCap } from "lucide-react";
