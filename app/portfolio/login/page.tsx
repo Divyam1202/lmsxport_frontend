@@ -12,7 +12,8 @@ export default function LoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { theme, toggleTheme } = useTheme();
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+  const API_BASE_URL =
+    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,11 +41,11 @@ export default function LoginPage() {
 
       // Redirect based on user role
       const redirectPath =
-        // data.user.role === "student"
-        //   ? "/student/dashboard"
-        //   : data.user.role === "instructor"
-        //   ? "/instructor/dashboard"
-        data.user.role === "portfolio"
+        data.user.role === "student"
+          ? "/student/dashboard"
+          : data.user.role === "instructor"
+          ? "/instructor/dashboard"
+          : data.user.role === "portfolio"
           ? "/portfolio/dashboard"
           : "/admin/dashboard";
 
@@ -59,13 +60,6 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black transition-colors duration-200 p-4">
       <div className="w-full max-w-md">
-        <Link
-          href="/portfolio"
-          className="text-xl font-bold absolute top-5 left-1/4 transform -translate-x-1/2 bg-gradient-to-r from-blue-600 to-blue-400 dark:from-blue-400 dark:to-blue-300 text-transparent bg-clip-text"
-        >
-          Portfolio Hub
-        </Link>
-
         {/* Card Container */}
         <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-2xl shadow-xl dark:shadow-gray-900/50 border border-gray-200 dark:border-gray-800 p-8 space-y-6 relative">
           {/* Theme Toggle */}
@@ -208,7 +202,7 @@ export default function LoginPage() {
             <p className="text-sm text-gray-600 dark:text-gray-400">
               Don't have an account?{" "}
               <Link
-                href="/portfolio/register"
+                href="/register"
                 className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300"
               >
                 Register here
