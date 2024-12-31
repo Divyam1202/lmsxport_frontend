@@ -21,7 +21,7 @@ export default function PortfolioDashboard() {
     }
 
     const fetchPortfolioData = async () => {
-      const response = await fetch(`${API_BASE_URL}/api/portfolio/user/me`, {
+      const response = await fetch(`${API_BASE_URL}/portfolio/user/me`, {
         // Use 'me' to get logged in user's portfolio
         method: "GET",
         headers: {

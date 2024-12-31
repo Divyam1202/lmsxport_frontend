@@ -30,7 +30,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchPortfolios = async () => {
       try {
-        const response = await fetch("${API_BASE_URL}/api/portfolio", {
+        const response = await fetch("${API_BASE_URL}/portfolio", {
           method: "GET",
         });
 
