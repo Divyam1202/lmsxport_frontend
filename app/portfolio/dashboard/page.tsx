@@ -183,7 +183,7 @@ export default function DashboardPage() {
 
   const handleSaveProfile = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/portfolio`, {
+      const response = await fetch(`${API_BASE_URL}/api/portfolio`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
